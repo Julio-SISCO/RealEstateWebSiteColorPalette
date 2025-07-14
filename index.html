@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Palettes de couleurs pour site immobilier</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            margin: 0;
+            font-size: 2.5em;
+            font-weight: 300;
+        }
+        
+        .header p {
+            margin: 10px 0 0 0;
+            opacity: 0.9;
+            font-size: 1.1em;
+        }
+        
+        .palettes-grid {
+            padding: 40px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+        }
+        
+        .palette-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .palette-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+        
+        .palette-header {
+            padding: 20px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .palette-title {
+            font-size: 1.4em;
+            font-weight: 600;
+            margin: 0 0 5px 0;
+            color: #333;
+        }
+        
+        .palette-description {
+            color: #666;
+            margin: 0;
+            font-size: 0.9em;
+        }
+        
+        .colors-container {
+            display: flex;
+            height: 120px;
+        }
+        
+        .color-block {
+            flex: 1;
+            display: flex;
+            align-items: end;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+            padding: 15px 5px;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .color-block:hover {
+            transform: scale(1.05);
+            z-index: 10;
+        }
+        
+        .color-code {
+            font-size: 0.8em;
+            font-family: 'Courier New', monospace;
+            background: rgba(0,0,0,0.2);
+            padding: 3px 8px;
+            border-radius: 4px;
+            backdrop-filter: blur(5px);
+        }
+        
+        .usage-info {
+            padding: 20px;
+            background: #f8f9fa;
+            border-top: 1px solid #eee;
+        }
+        
+        .usage-title {
+            font-size: 1em;
+            font-weight: 600;
+            margin: 0 0 10px 0;
+            color: #333;
+        }
+        
+        .usage-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .usage-list li {
+            padding: 5px 0;
+            font-size: 0.9em;
+            color: #666;
+        }
+        
+        .usage-list li::before {
+            content: "→";
+            color: #667eea;
+            margin-right: 8px;
+            font-weight: bold;
+        }
+        
+        .copy-notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #4CAF50;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 6px;
+            font-size: 0.9em;
+            opacity: 0;
+            transform: translateY(-20px);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+        
+        .copy-notification.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Couleurs spécifiques pour chaque palette */
+        .palette1 .color1 { background: #1e3a8a; }
+        .palette1 .color2 { background: #ffffff; color: #333; }
+        .palette1 .color3 { background: #f97316; }
+        
+        .palette2 .color1 { background: #374151; }
+        .palette2 .color2 { background: #ffffff; color: #333; }
+        .palette2 .color3 { background: #10b981; }
+        
+        .palette3 .color1 { background: #0ea5e9; }
+        .palette3 .color2 { background: #f1f5f9; color: #333; }
+        .palette3 .color3 { background: #d4af37; }
+        
+        .palette4 .color1 { background: #1e40af; }
+        .palette4 .color2 { background: #e2e8f0; color: #333; }
+        .palette4 .color3 { background: #059669; }
+        
+        .palette5 .color1 { background: #475569; }
+        .palette5 .color2 { background: #f8fafc; color: #333; }
+        .palette5 .color3 { background: #dc2626; }
+        
+        .palette6 .color1 { background: #0f172a; }
+        .palette6 .color2 { background: #cbd5e1; color: #333; }
+        .palette6 .color3 { background: #b45309; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Palettes de couleurs immobilier</h1>
+            <p>Cliquez sur une couleur pour copier son code hexadécimal</p>
+        </div>
+        
+        <div class="palettes-grid">
+            <!-- Palette 1: Bleu Marine + Blanc + Orange -->
+            <div class="palette-card palette1">
+                <div class="palette-header">
+                    <h3 class="palette-title">Confiance Professionnelle</h3>
+                    <p class="palette-description">Bleu marine + Blanc + Orange</p>
+                </div>
+                <div class="colors-container">
+                    <div class="color-block color1" data-color="#1e3a8a">
+                        <span class="color-code">#1e3a8a</span>
+                    </div>
+                    <div class="color-block color2" data-color="#ffffff">
+                        <span class="color-code">#ffffff</span>
+                    </div>
+                    <div class="color-block color3" data-color="#f97316">
+                        <span class="color-code">#f97316</span>
+                    </div>
+                </div>
+                <div class="usage-info">
+                    <h4 class="usage-title">Utilisation recommandée :</h4>
+                    <ul class="usage-list">
+                        <li>Bleu marine : Headers, navigation, pieds de page</li>
+                        <li>Blanc : Arrière-plans, espaces, contenus</li>
+                        <li>Orange : Boutons CTA, liens importants</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Palette 2: Gris Anthracite + Blanc + Vert -->
+            <div class="palette-card palette2">
+                <div class="palette-header">
+                    <h3 class="palette-title">Moderne Sophistiqué</h3>
+                    <p class="palette-description">Gris anthracite + Blanc + Vert</p>
+                </div>
+                <div class="colors-container">
+                    <div class="color-block color1" data-color="#374151">
+                        <span class="color-code">#374151</span>
+                    </div>
+                    <div class="color-block color2" data-color="#ffffff">
+                        <span class="color-code">#ffffff</span>
+                    </div>
+                    <div class="color-block color3" data-color="#10b981">
+                        <span class="color-code">#10b981</span>
+                    </div>
+                </div>
+                <div class="usage-info">
+                    <h4 class="usage-title">Utilisation recommandée :</h4>
+                    <ul class="usage-list">
+                        <li>Gris anthracite : Textes, bordures, éléments UI</li>
+                        <li>Blanc : Fonds, cartes, sections principales</li>
+                        <li>Vert : Boutons de contact, prix, validations</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Palette 3: Bleu Ciel + Gris Clair + Doré -->
+            <div class="palette-card palette3">
+                <div class="palette-header">
+                    <h3 class="palette-title">Luxe Accessible</h3>
+                    <p class="palette-description">Bleu ciel + Gris clair + Doré</p>
+                </div>
+                <div class="colors-container">
+                    <div class="color-block color1" data-color="#0ea5e9">
+                        <span class="color-code">#0ea5e9</span>
+                    </div>
+                    <div class="color-block color2" data-color="#f1f5f9">
+                        <span class="color-code">#f1f5f9</span>
+                    </div>
+                    <div class="color-block color3" data-color="#d4af37">
+                        <span class="color-code">#d4af37</span>
+                    </div>
+                </div>
+                <div class="usage-info">
+                    <h4 class="usage-title">Utilisation recommandée :</h4>
+                    <ul class="usage-list">
+                        <li>Bleu ciel : Navigation, liens, éléments interactifs</li>
+                        <li>Gris clair : Arrière-plans, sections secondaires</li>
+                        <li>Doré : Éléments premium, badges, highlights</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Palette 4: Bleu Royal + Gris Ardoise + Vert Émeraude -->
+            <div class="palette-card palette4">
+                <div class="palette-header">
+                    <h3 class="palette-title">Stabilité Dynamique</h3>
+                    <p class="palette-description">Bleu royal + Gris ardoise + Vert émeraude</p>
+                </div>
+                <div class="colors-container">
+                    <div class="color-block color1" data-color="#1e40af">
+                        <span class="color-code">#1e40af</span>
+                    </div>
+                    <div class="color-block color2" data-color="#e2e8f0">
+                        <span class="color-code">#e2e8f0</span>
+                    </div>
+                    <div class="color-block color3" data-color="#059669">
+                        <span class="color-code">#059669</span>
+                    </div>
+                </div>
+                <div class="usage-info">
+                    <h4 class="usage-title">Utilisation recommandée :</h4>
+                    <ul class="usage-list">
+                        <li>Bleu royal : Headers principaux, branding</li>
+                        <li>Gris ardoise : Zones de contenu, cartes</li>
+                        <li>Vert émeraude : Succès, validation, croissance</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Palette 5: Gris Ardoise + Blanc Cassé + Rouge Accent -->
+            <div class="palette-card palette5">
+                <div class="palette-header">
+                    <h3 class="palette-title">Minimaliste Efficace</h3>
+                    <p class="palette-description">Gris ardoise + Blanc cassé + Rouge accent</p>
+                </div>
+                <div class="colors-container">
+                    <div class="color-block color1" data-color="#475569">
+                        <span class="color-code">#475569</span>
+                    </div>
+                    <div class="color-block color2" data-color="#f8fafc">
+                        <span class="color-code">#f8fafc</span>
+                    </div>
+                    <div class="color-block color3" data-color="#dc2626">
+                        <span class="color-code">#dc2626</span>
+                    </div>
+                </div>
+                <div class="usage-info">
+                    <h4 class="usage-title">Utilisation recommandée :</h4>
+                    <ul class="usage-list">
+                        <li>Gris ardoise : Textes, navigation, structure</li>
+                        <li>Blanc cassé : Arrière-plans, espaces breathing</li>
+                        <li>Rouge accent : Alertes, promotions, urgence</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Palette 6: Noir Profond + Gris Perle + Bronze -->
+            <div class="palette-card palette6">
+                <div class="palette-header">
+                    <h3 class="palette-title">Prestige Haut de Gamme</h3>
+                    <p class="palette-description">Noir profond + Gris perle + Bronze</p>
+                </div>
+                <div class="colors-container">
+                    <div class="color-block color1" data-color="#0f172a">
+                        <span class="color-code">#0f172a</span>
+                    </div>
+                    <div class="color-block color2" data-color="#cbd5e1">
+                        <span class="color-code">#cbd5e1</span>
+                    </div>
+                    <div class="color-block color3" data-color="#b45309">
+                        <span class="color-code">#b45309</span>
+                    </div>
+                </div>
+                <div class="usage-info">
+                    <h4 class="usage-title">Utilisation recommandée :</h4>
+                    <ul class="usage-list">
+                        <li>Noir profond : Headers, pieds de page, contraste</li>
+                        <li>Gris perle : Zones de contenu, backgrounds</li>
+                        <li>Bronze : Éléments luxury, prix premium</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="copy-notification" id="copyNotification">
+        Code couleur copié dans le presse-papiers !
+    </div>
+    
+    <script>
+        // Fonction pour copier le code couleur
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(function() {
+                showNotification();
+            }).catch(function(err) {
+                console.error('Erreur lors de la copie: ', err);
+            });
+        }
+        
+        // Afficher la notification
+        function showNotification() {
+            const notification = document.getElementById('copyNotification');
+            notification.classList.add('show');
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 2000);
+        }
+        
+        // Ajouter les event listeners pour tous les blocs de couleur
+        document.querySelectorAll('.color-block').forEach(block => {
+            block.addEventListener('click', function() {
+                const color = this.getAttribute('data-color');
+                copyToClipboard(color);
+            });
+        });
+        
+        // Ajouter des effets de survol dynamiques
+        document.querySelectorAll('.palette-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-5px) scale(1.02)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+    </script>
+</body>
+</html>
